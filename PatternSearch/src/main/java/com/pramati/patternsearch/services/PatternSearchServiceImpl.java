@@ -1,57 +1,50 @@
 package com.pramati.patternsearch.services;
 
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.ArrayList;
 
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
+import java.util.List;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class PatternSearchServiceImpl implements PatternSearchService {
 
 	public void findMatcher(String firstPath, String secondPath) {
 
-		Set<String> wordSet= new HashSet<String>();
-		//String patternCheck;
+		List<String> wordList= new ArrayList<String>();
+		
 
 		String firstFileContent=convertFileTextToString(firstPath);
 		String secondFileContent=convertFileTextToString(secondPath);
+        
+	
+		String textStr[] = firstFileContent.split("\\r?\\n");
+		
 
-		/*if(firstFileContent.length()>secondFileContent.length())
-		   patternCheck=secondFileContent;
-		else
-			patternCheck=secondFileContent;*/
-
-		Pattern p = Pattern.compile("[\\w']+");
-		Matcher m = p.matcher(firstFileContent);
-
-		while(m.find()){
-
-			wordSet.add(m.group());	
+		for(int i=0;i<textStr.length;i++)
+		{
+			String [] wordsInLine=textStr[i].split("\\s+");
+	    	wordList.add(wordsInLine[0].toLowerCase()+wordsInLine[wordsInLine.length-1].toLowerCase());	
 
 		}
 
-		Set<String> commonString=findCommonString(secondFileContent,wordSet);
+		List<String> commonString=findCommonString(secondFileContent,wordList);
 
 		display(commonString);
 
-
-
-
 	} 
 
-	private void display(Set<String> commonString) {
+	private void display(List<String> commonString) {
 
 		if(commonString!=null)
 		{
+			System.out.println(commonString.size());
 			Iterator<String> it = commonString.iterator();
 
 			while(it.hasNext())
@@ -63,25 +56,29 @@ public class PatternSearchServiceImpl implements PatternSearchService {
 
 	}
 
-	private Set<String> findCommonString(String secondFileContent, Set<String> wordSet) {
+	private List<String> findCommonString(String secondFileContent, List<String> wordList) {
 
 
-		Set<String> commonString= new HashSet<String>();
-		if(wordSet!=null && secondFileContent!=null){
+		List<String> commonString= new ArrayList<String>();
+		if(wordList!=null && secondFileContent!=null){
 
-			Pattern p = Pattern.compile("[\\w']+");
-			Matcher m = p.matcher(secondFileContent);
 			String word;
 
 
-			while(m.find()){
-				word= m.group();
+			String textStr[] = secondFileContent.split("\\r?\\n");
+			
 
-				if(wordSet.contains(word.toLowerCase()) || wordSet.contains(word.toUpperCase()) || wordSet.contains(word))
+			for(int i=0;i<textStr.length;i++)
+			{   
+				word=textStr[i];
+		    	String [] wordsInLine=textStr[i].split("\\s+");;
+		    	
+		    	if(wordList.contains(wordsInLine[0].toLowerCase()+wordsInLine[wordsInLine.length-1].toLowerCase())
+		    			|| wordList.contains(wordsInLine[0].toLowerCase())) 
 					commonString.add(word);
 
 			}
-
+			
 		}
 		return commonString;	
 
@@ -92,11 +89,9 @@ public class PatternSearchServiceImpl implements PatternSearchService {
 	{
 
 		String fileContent="";
-		InputStream is = null;
+		//InputStream is = null;
 
-		BufferedReader br;
-
-
+		BufferedReader br=null;
 
 		try {
 			br = new BufferedReader(new FileReader(path));
@@ -109,16 +104,14 @@ public class PatternSearchServiceImpl implements PatternSearchService {
 			fileContent=out.toString();
 
 		}catch (IOException e) {
-
+             e.printStackTrace();
 
 		} finally {
 			try {
-				if (is != null) is.close();
+				if (br != null) br.close();
 			} catch (IOException ioe) {
 
 			}
-
-
 
 		}
 
