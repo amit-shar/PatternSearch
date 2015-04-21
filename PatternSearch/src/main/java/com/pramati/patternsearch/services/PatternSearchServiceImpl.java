@@ -84,7 +84,7 @@ public class PatternSearchServiceImpl implements PatternSearchService {
 
 
 
-		if(wordList!=null && secondFileContent!=null){
+		if(wordList!=null && secondFileContent!=null && secondFileContent!=""){
 
 			String word;
 			String textStr[] = secondFileContent.split(NEWLINE_PATTERN);
