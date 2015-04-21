@@ -31,7 +31,7 @@ public class PatternFinder {
 
 		long endTime = System.currentTimeMillis();
 
-		System.out.println("Time taken to find the common names :" +(endTime - startTime));  
+		System.out.println("Time taken to find the common names :" +(endTime - startTime)+"milli-seconds");  
 
 
 	}
