@@ -4,22 +4,25 @@ package com.pramati.patternsearch.services;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
-
 import java.util.Iterator;
 import java.util.List;
 
 
+
 public class PatternSearchServiceImpl implements PatternSearchService {
 
+	private List<String> wordList;
+
+	private static final String NEWLINE_PATTERN="\\r?\\n";
+	private static final String WHITESPACE_PATTERN="\\s+";
 
 
 	public void findMatcher(String firstPath, String secondPath) {
 
-		List<String> wordList= new ArrayList<String>();
+		wordList= new ArrayList<String>();
 
 
 		String firstFileContent=convertFileTextToString(firstPath);
@@ -27,7 +30,7 @@ public class PatternSearchServiceImpl implements PatternSearchService {
 
 		if(firstFileContent!=null && firstFileContent!=""){
 
-			String textStr[] = firstFileContent.split("\\r?\\n");
+			String textStr[] = firstFileContent.split(NEWLINE_PATTERN);
 			String line;
 
 			for(int i=0;i<textStr.length;i++)
@@ -36,8 +39,8 @@ public class PatternSearchServiceImpl implements PatternSearchService {
 
 				if(line!="" || line!=" "){
 
-					String [] wordsInLine=line.split("\\s+");
-					wordList.add(wordsInLine[0].toLowerCase()+wordsInLine[wordsInLine.length-1].toLowerCase());	
+					String [] wordsInLine=line.split(WHITESPACE_PATTERN);
+					wordList.add((wordsInLine[0]+" "+wordsInLine[wordsInLine.length-1]).toLowerCase());	
 				}
 
 			}
@@ -60,7 +63,7 @@ public class PatternSearchServiceImpl implements PatternSearchService {
 		if(commonString!=null && commonString.size()>0)
 		{
 			System.out.println("Size of common string list is : "+commonString.size());
-			
+
 			Iterator<String> it = commonString.iterator();
 
 			while(it.hasNext())
@@ -79,22 +82,26 @@ public class PatternSearchServiceImpl implements PatternSearchService {
 
 		List<String> commonString= new ArrayList<String>();
 
+
+
 		if(wordList!=null && secondFileContent!=null){
 
 			String word;
-			String textStr[] = secondFileContent.split("\\r?\\n");
+			String textStr[] = secondFileContent.split(NEWLINE_PATTERN);
 
 			for(int i=0;i<textStr.length;i++)
 			{   
 				word=textStr[i];
 
 				if(word!=" " || word!=""){
-					String [] wordsInLine=textStr[i].split("\\s+");;
+					String [] wordsInLine=textStr[i].split(WHITESPACE_PATTERN);;
 
-					if(wordList.contains(wordsInLine[0].toLowerCase()+wordsInLine[wordsInLine.length-1].toLowerCase())
-							|| wordList.contains(wordsInLine[0].toLowerCase())) 
+					if(wordList.contains((wordsInLine[0]+" "+wordsInLine[wordsInLine.length-1]).toLowerCase()))
+						//|| wordList.contains(wordsInLine[0].toLowerCase())) 
 					{
+
 						commonString.add(word);
+
 					}
 
 				}
@@ -105,7 +112,7 @@ public class PatternSearchServiceImpl implements PatternSearchService {
 
 	}
 
-	
+
 	private String convertFileTextToString(String path)
 	{
 		String fileContent="";
