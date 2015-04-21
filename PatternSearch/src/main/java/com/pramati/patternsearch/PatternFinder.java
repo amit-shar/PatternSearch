@@ -14,7 +14,9 @@ public class PatternFinder {
 
 		PatternSearchService patternSearchService= new PatternSearchServiceImpl();
 
-
+        System.out.println("First file path : "+firstFile);
+        System.out.println("Second file path : " +secondFile);
+        
 		long startTime = System.currentTimeMillis();
 
 		if(firstFile!=null && secondFile!=null)
@@ -24,12 +26,12 @@ public class PatternFinder {
 
 		else
 		{
-			System.out.println("Please enter absolute file path");
+			System.out.println("Please enter valid file path");
 		}
 
 		long endTime = System.currentTimeMillis();
 
-		System.out.println("Time taken" +(endTime - startTime));  
+		System.out.println("Time taken to find the common names :" +(endTime - startTime));  
 
 
 	}

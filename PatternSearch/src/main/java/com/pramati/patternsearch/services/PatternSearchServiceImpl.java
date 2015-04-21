@@ -73,7 +73,9 @@ public class PatternSearchServiceImpl implements PatternSearchService {
 		}
 
 		else
+			{
 			System.out.println("No common String exists");
+			}
 
 	}
 
