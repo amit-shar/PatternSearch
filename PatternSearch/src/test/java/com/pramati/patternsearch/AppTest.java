@@ -1,4 +1,4 @@
-package com.pramati.patternsearch.PatternSearch;
+package com.pramati.patternsearch;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
