@@ -13,13 +13,7 @@ public class PatternFinder {
 
 		long startTime = System.currentTimeMillis();
 
-		if (firstFile != null && secondFile != null) {
-			patternSearchService.findMatcher(firstFile, secondFile);
-		}
-
-		else {
-			System.out.println("Please enter valid file path");
-		}
+		patternSearchService.findMatcher(firstFile, secondFile);
 
 		long endTime = System.currentTimeMillis();
 
