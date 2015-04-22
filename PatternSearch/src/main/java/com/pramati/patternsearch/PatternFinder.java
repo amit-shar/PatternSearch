@@ -1,7 +1,6 @@
 package com.pramati.patternsearch;
 
-import com.pramati.patternsearch.services.PatternSearchService;
-import com.pramati.patternsearch.services.PatternSearchServiceImpl;
+
 
 public class PatternFinder {
 
@@ -9,7 +8,7 @@ public class PatternFinder {
 		String firstFile = args[0];
 		String secondFile = args[1];
 
-		PatternSearchService patternSearchService = new PatternSearchServiceImpl();
+		PatternSearchProcessor patternSearchService = new PatternSearchProcessor();
 
 		System.out.println("First file path : " + firstFile);
 		System.out.println("Second file path : " + secondFile);

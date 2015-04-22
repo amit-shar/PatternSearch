@@ -1,4 +1,4 @@
-package com.pramati.patternsearch.services;
+package com.pramati.patternsearch;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -7,26 +7,28 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class PatternSearchServiceImpl implements PatternSearchService {
+public class PatternSearchProcessor {
 
 	private List<String> wordList;
 
-	
 	private static final String WHITESPACE_PATTERN = "\\s+";
 
 	public void findMatcher(String firstPath, String secondPath) {
 
 		wordList = new ArrayList<String>();
 
-		List<String> firstFileContent = convertFileTextToString(firstPath);
-		List<String> secondFileContent = convertFileTextToString(secondPath);
+		List<String> firstFileContent = getFileContent(firstPath);
+		List<String> secondFileContent = getFileContent(secondPath);
 
 		if (firstFileContent.size() > 0) {
 
 			for (String name : firstFileContent) {
 				String[] wordsInLine = name.split(WHITESPACE_PATTERN);
-				wordList.add((wordsInLine[0] + " " + wordsInLine[wordsInLine.length - 1])
-						.toLowerCase());
+
+				if (wordsInLine.length > 0) {
+					wordList.add((wordsInLine[0] + " " + wordsInLine[wordsInLine.length - 1])
+							.toLowerCase());
+				}
 			}
 
 		}
@@ -67,25 +69,27 @@ public class PatternSearchServiceImpl implements PatternSearchService {
 			for (String name : secondFileContent) {
 
 				String[] wordsInLine = name.split(WHITESPACE_PATTERN);
+				if (wordsInLine.length > 0) {
+					if (wordList
+							.contains((wordsInLine[0] + " " + wordsInLine[wordsInLine.length - 1])
+									.toLowerCase()))
 
-				if (wordList
-						.contains((wordsInLine[0] + " " + wordsInLine[wordsInLine.length - 1])
-								.toLowerCase()))
+					{
+						commonString.add(name);
 
-				{
-					commonString.add(name);
+					}
 
 				}
-
 			}
 
 		}
 		return commonString;
 	}
 
-	private List<String> convertFileTextToString(String path) {
+	private List<String> getFileContent(String path) {
 
 		List<String> nameList = new ArrayList<String>();
+
 		BufferedReader br = null;
 		String line = "";
 
