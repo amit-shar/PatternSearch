@@ -4,21 +4,23 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 public class PatternSearchProcessor {
-
-	private List<String> wordList;
 
 	private static final String WHITESPACE_PATTERN = "\\s+";
 
 	public void findMatcher(String firstPath, String secondPath) {
 
-		wordList = new ArrayList<String>();
-
 		List<String> firstFileContent = getFileContent(firstPath);
 		List<String> secondFileContent = getFileContent(secondPath);
+
+		Map<String, String> keyNamePair = new Hashtable<String, String>();
 
 		if (firstFileContent.size() > 0) {
 
@@ -26,31 +28,41 @@ public class PatternSearchProcessor {
 				String[] wordsInLine = name.split(WHITESPACE_PATTERN);
 
 				if (wordsInLine.length > 0) {
-					wordList.add((wordsInLine[0] + " " + wordsInLine[wordsInLine.length - 1])
-							.toLowerCase());
+
+					String key = (wordsInLine[0] + " " + wordsInLine[wordsInLine.length - 1])
+							.toLowerCase();
+
+					keyNamePair.put(key, name);
+
 				}
 			}
 
 		}
 
-		List<String> commonString = findCommonString(secondFileContent,
-				wordList);
+		Map<String, String> commonString = findCommonString(secondFileContent,
+				keyNamePair);
 
 		display(commonString);
 
 	}
 
-	private void display(List<String> commonString) {
+	@SuppressWarnings("rawtypes")
+	private void display(Map<String, String> commonString) {
 
 		if (commonString != null && commonString.size() > 0) {
-			System.out.println("Size of common string list is : "
+
+			System.out.println("Size of common string map is : "
 					+ commonString.size());
 
-			Iterator<String> it = commonString.iterator();
+			Set<Entry<String, String>> set = commonString.entrySet();
+			Iterator<Entry<String, String>> it = set.iterator();
 
 			while (it.hasNext()) {
-				System.out.println(it.next());
+				Map.Entry entry = (Map.Entry) it.next();
+				System.out.println(entry.getKey() + "  matches with :  "
+						+ entry.getValue());
 			}
+
 		}
 
 		else {
@@ -59,10 +71,10 @@ public class PatternSearchProcessor {
 
 	}
 
-	private List<String> findCommonString(List<String> secondFileContent,
-			List<String> wordList) {
+	private Map<String, String> findCommonString(
+			List<String> secondFileContent, Map<String, String> keyNamePair) {
 
-		List<String> commonString = new ArrayList<String>();
+		Map<String, String> commonString = new Hashtable<String, String>();
 
 		if (secondFileContent.size() > 0) {
 
@@ -70,12 +82,13 @@ public class PatternSearchProcessor {
 
 				String[] wordsInLine = name.split(WHITESPACE_PATTERN);
 				if (wordsInLine.length > 0) {
-					if (wordList
-							.contains((wordsInLine[0] + " " + wordsInLine[wordsInLine.length - 1])
-									.toLowerCase()))
+
+					String key = (wordsInLine[0] + " " + wordsInLine[wordsInLine.length - 1])
+							.toLowerCase();
+					if (keyNamePair.containsKey(key))
 
 					{
-						commonString.add(name);
+						commonString.put(keyNamePair.get(key), name);
 
 					}
 
