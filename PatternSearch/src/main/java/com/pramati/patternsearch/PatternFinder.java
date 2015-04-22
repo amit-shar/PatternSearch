@@ -1,7 +1,5 @@
 package com.pramati.patternsearch;
 
-
-
 public class PatternFinder {
 
 	public static void main(String args[]) {
