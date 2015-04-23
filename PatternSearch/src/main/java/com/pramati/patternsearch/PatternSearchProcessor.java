@@ -33,6 +33,7 @@ public class PatternSearchProcessor {
 							.toLowerCase();
 
 					keyNamePair.put(key, name);
+					System.out.println("abc");
 
 				}
 			}
