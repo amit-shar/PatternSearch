@@ -4,11 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.Iterator;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 public class PatternSearchProcessor {
@@ -17,51 +14,66 @@ public class PatternSearchProcessor {
 
 	public void findMatcher(String firstPath, String secondPath) {
 
-		List<String> firstFileContent = getFileContent(firstPath);
-		List<String> secondFileContent = getFileContent(secondPath);
+		Set<String> firstFileContent = getFileContent(firstPath);
+		Set<String> secondFileContent = getFileContent(secondPath);
+		List<Tuple> matchingTupleList = new ArrayList<Tuple>();
 
-		Map<String, String> keyNamePair = new Hashtable<String, String>();
+		Tuple tupleObj;
 
-		if (firstFileContent.size() > 0) {
+		for (String firstTuple : firstFileContent) {
 
-			for (String name : firstFileContent) {
-				String[] wordsInLine = name.split(WHITESPACE_PATTERN);
+			for (String secondTuple : secondFileContent) {
 
-				if (wordsInLine.length > 0) {
-
-					String key = (wordsInLine[0] + " " + wordsInLine[wordsInLine.length - 1])
-							.toLowerCase();
-
-					keyNamePair.put(key, name);
-					System.out.println("abc");
+				if (isSimilar(firstTuple, secondTuple)) {
+					tupleObj = new Tuple();
+					tupleObj.setFirstTuple(firstTuple);
+					tupleObj.setSecondTuple(secondTuple);
+					matchingTupleList.add(tupleObj);
+					break;
 
 				}
+
 			}
 
 		}
 
-		Map<String, String> commonString = findCommonString(secondFileContent,
-				keyNamePair);
-
-		display(commonString);
+		display(matchingTupleList);
 
 	}
 
-	@SuppressWarnings("rawtypes")
-	private void display(Map<String, String> commonString) {
+	private boolean isSimilar(String firstTuple, String secondTuple) {
 
-		if (commonString != null && commonString.size() > 0) {
+		String firstKey = getKey(firstTuple);
+		String secondKey = getKey(secondTuple);
+
+		return firstKey.equalsIgnoreCase(secondKey);
+
+	}
+
+	private String getKey(String value) {
+
+		String[] wordsInLine = value.split(WHITESPACE_PATTERN);
+		String key = "";
+
+		if (wordsInLine.length > 0) {
+			key = (wordsInLine[0] + " " + wordsInLine[wordsInLine.length - 1]);
+
+		}
+
+		return key;
+
+	}
+
+	private void display(List<Tuple> matchingList) {
+
+		if (matchingList != null && matchingList.size() > 0) {
 
 			System.out.println("Size of common string map is : "
-					+ commonString.size());
+					+ matchingList.size());
 
-			Set<Entry<String, String>> set = commonString.entrySet();
-			Iterator<Entry<String, String>> it = set.iterator();
-
-			while (it.hasNext()) {
-				Map.Entry entry = (Map.Entry) it.next();
-				System.out.println(entry.getKey() + "  matches with :  "
-						+ entry.getValue());
+			for (Tuple value : matchingList) {
+				System.out.println(value.getFirstTuple() + "  matches with "
+						+ value.getSecondTuple());
 			}
 
 		}
@@ -72,37 +84,9 @@ public class PatternSearchProcessor {
 
 	}
 
-	private Map<String, String> findCommonString(
-			List<String> secondFileContent, Map<String, String> keyNamePair) {
+	private Set<String> getFileContent(String path) {
 
-		Map<String, String> commonString = new Hashtable<String, String>();
-
-		if (secondFileContent.size() > 0) {
-
-			for (String name : secondFileContent) {
-
-				String[] wordsInLine = name.split(WHITESPACE_PATTERN);
-				if (wordsInLine.length > 0) {
-
-					String key = (wordsInLine[0] + " " + wordsInLine[wordsInLine.length - 1])
-							.toLowerCase();
-					if (keyNamePair.containsKey(key))
-
-					{
-						commonString.put(keyNamePair.get(key), name);
-
-					}
-
-				}
-			}
-
-		}
-		return commonString;
-	}
-
-	private List<String> getFileContent(String path) {
-
-		List<String> nameList = new ArrayList<String>();
+		Set<String> nameSet = new HashSet<String>();
 
 		BufferedReader br = null;
 		String line = "";
@@ -113,7 +97,7 @@ public class PatternSearchProcessor {
 			while ((line = br.readLine()) != null) {
 
 				if (line != "") {
-					nameList.add(line);
+					nameSet.add(line);
 				}
 
 			}
@@ -133,7 +117,7 @@ public class PatternSearchProcessor {
 
 		}
 
-		return nameList;
+		return nameSet;
 
 	}
 
