@@ -19,7 +19,7 @@ public class PatternSearchProcessor {
 		List<Tuple> matchingTupleList = new ArrayList<Tuple>();
 
 		Tuple tupleObj;
-
+		
 		for (String firstTuple : firstFileContent) {
 
 			for (String secondTuple : secondFileContent) {
@@ -29,7 +29,7 @@ public class PatternSearchProcessor {
 					tupleObj.setFirstTuple(firstTuple);
 					tupleObj.setSecondTuple(secondTuple);
 					matchingTupleList.add(tupleObj);
-					break;
+					//break;
 
 				}
 
