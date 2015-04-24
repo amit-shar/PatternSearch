@@ -29,7 +29,7 @@ public class PatternSearchProcessor {
 					tupleObj.setFirstTuple(firstTuple);
 					tupleObj.setSecondTuple(secondTuple);
 					matchingTupleList.add(tupleObj);
-					//break;
+					
 
 				}
 
