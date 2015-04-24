@@ -20,14 +20,14 @@ public class PatternSearchProcessor {
 
 		Tuple tupleObj;
 		
-		for (String firstTuple : firstFileContent) {
+		for (String firstFileRow : firstFileContent) {
 
-			for (String secondTuple : secondFileContent) {
+			for (String secondFileRow : secondFileContent) {
 
-				if (isSimilar(firstTuple, secondTuple)) {
+				if (isSimilar(firstFileRow, secondFileRow)) {
 					tupleObj = new Tuple();
-					tupleObj.setFirstTuple(firstTuple);
-					tupleObj.setSecondTuple(secondTuple);
+					tupleObj.setFirstTuple(firstFileRow);
+					tupleObj.setSecondTuple(secondFileRow);
 					matchingTupleList.add(tupleObj);
 					
 
@@ -104,7 +104,7 @@ public class PatternSearchProcessor {
 
 		} catch (IOException e) {
 			System.err
-					.println("In PatternSearchServiceImpl : convertFileTextToString(). File IO exception");
+					.println("In PatternSearchProcessor : getFileContent(). File IO exception");
 
 		} finally {
 			try {
@@ -112,7 +112,7 @@ public class PatternSearchProcessor {
 					br.close();
 			} catch (IOException ioe) {
 				System.err
-						.println("In PatternSearchServiceImpl : convertFileTextToString(). Exception occurred while closing the file");
+						.println("In PatternSearchProcessor : getFileContent(). Exception occurred while closing the file");
 			}
 
 		}
