@@ -9,7 +9,6 @@ import java.util.Set;
 
 public class PatternSearchProcessor {
 
-	// private static final String WHITESPACE_PATTERN = "\\s+";
 
 	public void findMatcher(String firstPath, String secondPath) {
 
@@ -25,7 +24,7 @@ public class PatternSearchProcessor {
 			for (String secondFileRow : secondFileContent) {
 
 				if (isSimilar(firstFileRow, secondFileRow)
-						&& editDistance(firstFileRow, secondFileRow) < 8) {
+						&& getSimilarity(firstFileRow, secondFileRow) >= 0.6F) {
 					tupleObj = new Tuple();
 					tupleObj.setFirstTuple(firstFileRow);
 					tupleObj.setSecondTuple(secondFileRow);
@@ -45,29 +44,23 @@ public class PatternSearchProcessor {
 		String firstKey = getPhonetiPattern(firstTuple.toLowerCase());
 		String secondKey = getPhonetiPattern(secondTuple.toLowerCase());
 
-		return firstKey.equals(secondKey);
-
+		return firstKey.compareTo(secondKey) == 0 ? true : false;
+		
 	}
 
-	/*
-	 * private String getKey(String value) {
-	 * 
-	 * String[] wordsInLine = value.split(WHITESPACE_PATTERN); String key = "";
-	 * 
-	 * if (wordsInLine.length > 0) { key = (wordsInLine[0] + " " +
-	 * wordsInLine[wordsInLine.length - 1]);
-	 * 
-	 * }
-	 * 
-	 * return key;
-	 * 
-	 * }
-	 */
+	
 
 	protected int editDistance(String firstWord, String secondWord) {
 
 		int firstWordLen = firstWord.length();
 		int secondWordLen = secondWord.length();
+		
+		int replace;
+		int insert;
+		int delete;
+		int min;
+		char firstToken;
+		char secondToken;
 
 		// firstWordLen+1, secondWordLen+1, because finally return
 		// minCost[firstWordLen][secondWordLen]
@@ -83,20 +76,20 @@ public class PatternSearchProcessor {
 
 		// iterate though, and check last char
 		for (int i = 0; i < firstWordLen; i++) {
-			char c1 = firstWord.charAt(i);
+			firstToken = firstWord.charAt(i);
 			for (int j = 0; j < secondWordLen; j++) {
-				char c2 = secondWord.charAt(j);
+				secondToken = secondWord.charAt(j);
 
 				// if last two chars equal
-				if (c1 == c2) {
+				if (firstToken == secondToken) {
 					// update minCost value for +1 length
 					minCost[i + 1][j + 1] = minCost[i][j];
 				} else {
-					int replace = minCost[i][j] + 1;
-					int insert = minCost[i][j + 1] + 1;
-					int delete = minCost[i + 1][j] + 1;
+					 replace = minCost[i][j] + 1;
+					 insert = minCost[i][j + 1] + 1;
+					 delete = minCost[i + 1][j] + 1;
 
-					int min = replace > insert ? insert : replace;
+					min = replace > insert ? insert : replace;
 					min = delete > min ? min : delete;
 					minCost[i + 1][j + 1] = min;
 				}
@@ -105,6 +98,17 @@ public class PatternSearchProcessor {
 
 		return minCost[firstWordLen][secondWordLen];
 
+	}
+
+	public float getSimilarity(String firstWord, String secondWord) {
+		float dis = editDistance(firstWord, secondWord);
+		float maxLen = firstWord.length();
+		if (maxLen < secondWord.length())
+			maxLen = secondWord.length();
+		if (maxLen == 0.0F)
+			return 1.0F;
+		else
+			return 1.0F - dis / maxLen;
 	}
 
 	protected String getPhonetiPattern(String line) {
