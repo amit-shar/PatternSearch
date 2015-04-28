@@ -29,12 +29,21 @@ public class PatternSearchProcessorTest {
 		
 	}
 	
-public void testGetPhonetiPattern() {
+	@Test
+    public void testGetPhonetiPattern() {
 		
 		String actualPattern=helper.getPhonetiPattern("Himanshu");
 		String expectedPattern="H552";
 	   assertEquals(expectedPattern, actualPattern);
 		
+	}
+	
+	@Test 
+	public void testgetSimilarity()
+	{
+		float actualSimilarity= helper.getSimilarity("Himanshu", "Himansu");
+		float expectedSimilarity=0.875F;
+		assertEquals(expectedSimilarity, actualSimilarity,0);
 	}
 
 }

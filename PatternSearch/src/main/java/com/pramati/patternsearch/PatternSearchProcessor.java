@@ -9,7 +9,6 @@ import java.util.Set;
 
 public class PatternSearchProcessor {
 
-
 	public void findMatcher(String firstPath, String secondPath) {
 
 		Set<String> firstFileContent = getFileContent(firstPath);
@@ -45,16 +44,14 @@ public class PatternSearchProcessor {
 		String secondKey = getPhonetiPattern(secondTuple.toLowerCase());
 
 		return firstKey.compareTo(secondKey) == 0 ? true : false;
-		
-	}
 
-	
+	}
 
 	protected int editDistance(String firstWord, String secondWord) {
 
 		int firstWordLen = firstWord.length();
 		int secondWordLen = secondWord.length();
-		
+
 		int replace;
 		int insert;
 		int delete;
@@ -85,9 +82,9 @@ public class PatternSearchProcessor {
 					// update minCost value for +1 length
 					minCost[i + 1][j + 1] = minCost[i][j];
 				} else {
-					 replace = minCost[i][j] + 1;
-					 insert = minCost[i][j + 1] + 1;
-					 delete = minCost[i + 1][j] + 1;
+					replace = minCost[i][j] + 1;
+					insert = minCost[i][j + 1] + 1;
+					delete = minCost[i + 1][j] + 1;
 
 					min = replace > insert ? insert : replace;
 					min = delete > min ? min : delete;
