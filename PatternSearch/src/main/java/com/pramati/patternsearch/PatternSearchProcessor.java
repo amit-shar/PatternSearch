@@ -110,8 +110,8 @@ public class PatternSearchProcessor {
 
 	protected String getPhonetiPattern(String line) {
 
-		String code = "";
-		String pattern = "";
+		StringBuilder code = new StringBuilder();
+		StringBuilder pattern = new StringBuilder();
 		String result = "";
 		char prev = 0;
 
@@ -120,32 +120,33 @@ public class PatternSearchProcessor {
 					|| line.charAt(i) == 'e' || line.charAt(i) == 'o'
 					|| line.charAt(i) == 'u' || line.charAt(i) == 'y'
 					|| line.charAt(i) == 'h' || line.charAt(i) == 'w') {
-				code += "0";
+				code.append('0');
 
 			} else if (line.charAt(i) == 'c' || line.charAt(i) == 'g'
 					|| line.charAt(i) == 'j' || line.charAt(i) == 'k'
 					|| line.charAt(i) == 'q' || line.charAt(i) == 's'
 					|| line.charAt(i) == 'x' || line.charAt(i) == 'z') {
-				code += "2";
+				code.append('2');
 			}
 
 			else if (line.charAt(i) == 'b' || line.charAt(i) == 'p'
 					|| line.charAt(i) == 'f' || line.charAt(i) == 'v') {
-				code += "1";
+				code.append('1');
 			}
 
 			else if (line.charAt(i) == 'd' || line.charAt(i) == 't') {
-				code += "3";
+				code.append('3');
 			}
 
 			else if (line.charAt(i) == 'm' || line.charAt(i) == 'n') {
-				code += "5";
+				code.append('5');
 			} else if (line.charAt(i) == 'l') {
-				code += "4";
+				code.append('4');
+
 			}
 
 			else if (line.charAt(i) == 'r') {
-				code += "6";
+				code.append('6');
 			}
 
 		}
@@ -153,12 +154,12 @@ public class PatternSearchProcessor {
 		for (int i = 0; i < code.length() - 1; i++) {
 			if (prev != code.charAt(i)) {
 				if (code.charAt(i) == code.charAt(i + 1)) {
-					pattern += code.charAt(i);
+					pattern.append(code.charAt(i));
 					prev = code.charAt(i);
 					i++;
 				} else {
 
-					pattern += code.charAt(i);
+					pattern.append(code.charAt(i));
 					prev = code.charAt(i);
 				}
 
